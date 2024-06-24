@@ -1,0 +1,19 @@
+library(rvest)
+library(dplyr)
+
+get_person_data <- function(id) {
+  html <- read_html(paste("https://www.worldcubeassociation.org/persons/", id, sep = ""))
+  
+  name <- html %>%
+    html_node("div.text-center h2") %>%
+    html_text()
+  
+  image_url <- html %>% 
+    html_node("div.text-center img.avatar") %>% 
+    html_attr("src")
+  
+  cat("Name:", name, "\n")
+  cat("Image URL:", image_url, "\n")
+}
+
+get_person_data("2022ESPI14")
