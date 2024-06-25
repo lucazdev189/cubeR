@@ -4,10 +4,12 @@
 \alias{get_person_data}
 \title{get_person_data}
 \usage{
-get_person_data(id)
+get_person_data(id, export_csv = FALSE, directory = NULL)
 }
 \arguments{
 \item{id}{ID of the person to be searched.}
+
+\item{export_csv}{Whether or not the data should be exported. Set to false by default.}
 }
 \description{
 Gets person data from WCA website using the ID provided.
