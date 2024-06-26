@@ -2,12 +2,13 @@
 #'
 #' Gets person data from WCA website using the ID provided.
 #'
-#' @importFrom rvest read_html html_node html_text html_attr
+#' @importFrom rvest read_html html_node html_text html_table html_element
 #' @importFrom dplyr %>%
 #' @param id ID of the person to be searched.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
 #' @export
 get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
+  options(pillar.sigfig=7)
   html <- rvest::read_html(paste("https://www.worldcubeassociation.org/persons/", id, sep = ""))
 
   name <- html %>%
@@ -35,30 +36,9 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
      rvest::html_text()
 
    events <- html %>%
-     rvest::html_nodes("table.table tbody tr")
-
-   event_data <- lapply(events, function(event) {
-     event_name <- event %>%
-       rvest::html_node("td:nth-child(1)") %>%
-       rvest::html_text(trim=TRUE)
-
-     single <- event %>%
-       rvest::html_node("td:nth-child(5)") %>%
-       rvest::html_text(trim=TRUE)
-
-     average <- event %>%
-       rvest::html_node("td:nth-child(6)") %>%
-       rvest::html_text(trim=TRUE)
-
-     data.frame(
-       Event = event_name,
-       Single = single,
-       Average = average,
-       stringsAsFactors = FALSE
-     )
-   })
-
-   event_data <- do.call(rbind, event_data)
+     rvest::html_element(".personal-records table") %>%
+     rvest::html_table() %>%
+     dplyr::select(Event, Single, Average)
 
    if(export_csv) {
      key_data <- data.frame(
@@ -72,8 +52,6 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
      )
      names(key_data) <- c("Name", "ID", "Avatar", "Country", "Gender", "Competitions", "Completed Solves")
 
-     final_data <- cbind(key_data, event_data)
-
      write.csv(final_data, file=paste0(directory, "/person_data.csv"), fileEncoding = "UTF-8")
      print("Saved to directory")
    }
@@ -85,6 +63,6 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
   cat("Gender:", gender, "\n")
   cat("Competitions:", comps, "\n")
   cat("Completed Solves:", comp_solves, "\n")
-  cat("Event Data:\n")
-  print(event_data)
+  cat("PR Data:\n")
+  print(events)
 }
