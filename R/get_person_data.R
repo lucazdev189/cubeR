@@ -36,35 +36,9 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
      rvest::html_text()
 
    events <- html %>%
-     rvest::html_nodes("table.table tbody tr")
-
-   event_data <- lapply(events, function(event) {
-     event_name <- event %>%
-       rvest::html_node("td:nth-child(1)") %>%
-       rvest::html_text(trim=TRUE)
-
-     single <- event %>%
-       rvest::html_node("td:nth-child(5)") %>%
-       rvest::html_text(trim=TRUE)
-
-     average <- event %>%
-       rvest::html_node("td:nth-child(6)") %>%
-       rvest::html_text(trim=TRUE)
-
-     data.frame(
-       Event = event_name,
-       Single = single,
-       Average = average,
-       stringsAsFactors = FALSE
-     )
-   })
-
-   event_data <- do.call(rbind, event_data)
-=======
      rvest::html_element(".personal-records table") %>%
      rvest::html_table() %>%
      dplyr::select(Event, Single, Average)
->>>>>>> 69105fd8c2d6128bf79292a2bea0eedc76554617
 
    if(export_csv) {
      key_data <- data.frame(
@@ -74,15 +48,11 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
        country,
        gender,
        comps,
-       comp_solves
+       comp_solves,
+       events
      )
-     names(key_data) <- c("Name", "ID", "Avatar", "Country", "Gender", "Competitions", "Completed Solves")
-
-<<<<<<< HEAD
-     final_data <- cbind(key_data, event_data)
-
-=======
->>>>>>> 69105fd8c2d6128bf79292a2bea0eedc76554617
+     names(key_data) <- c("Name", "ID", "Avatar", "Country", "Gender", "Competitions", "Completed Solves", "PR Data")
+     final_data <- cbind(key_data, events)
      write.csv(final_data, file=paste0(directory, "/person_data.csv"), fileEncoding = "UTF-8")
      print("Saved to directory")
    }
@@ -94,11 +64,6 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
   cat("Gender:", gender, "\n")
   cat("Competitions:", comps, "\n")
   cat("Completed Solves:", comp_solves, "\n")
-<<<<<<< HEAD
-  cat("Event Data:\n")
-  print(event_data)
-=======
   cat("PR Data:\n")
   print(events)
->>>>>>> 69105fd8c2d6128bf79292a2bea0eedc76554617
 }
