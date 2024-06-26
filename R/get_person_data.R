@@ -2,12 +2,13 @@
 #'
 #' Gets person data from WCA website using the ID provided.
 #'
-#' @importFrom rvest read_html html_node html_text html_attr
+#' @importFrom rvest read_html html_node html_text html_table html_element
 #' @importFrom dplyr %>%
 #' @param id ID of the person to be searched.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
 #' @export
 get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
+  options(pillar.sigfig=7)
   html <- rvest::read_html(paste("https://www.worldcubeassociation.org/persons/", id, sep = ""))
 
   name <- html %>%
@@ -30,22 +31,38 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
      rvest::html_node("table.table tbody td:nth-child(4)") %>%
      rvest::html_text()
 
+   comp_solves <- html %>%
+     rvest::html_node("table.table tbody td:nth-child(5)") %>%
+     rvest::html_text()
+
+   events <- html %>%
+     rvest::html_element(".personal-records table") %>%
+     rvest::html_table() %>%
+     dplyr::select(Event, Single, Average)
+
    if(export_csv) {
      key_data <- data.frame(
        name,
+       id,
        image_url,
        country,
        gender,
-       comps
+       comps,
+       comp_solves
      )
-     names(key_data) <- c("Name", "Avatar", "Country", "Gender", "Competitions")
-     write.csv(key_data, file=paste0(directory, "/person_data.csv"), fileEncoding = "UTF-8")
+     names(key_data) <- c("Name", "ID", "Avatar", "Country", "Gender", "Competitions", "Completed Solves")
+
+     write.csv(final_data, file=paste0(directory, "/person_data.csv"), fileEncoding = "UTF-8")
      print("Saved to directory")
    }
 
   cat("Name:", name, "\n")
+  cat("ID:", id, "\n")
   cat("Image URL:", image_url, "\n")
   cat("Country:", country, "\n")
   cat("Gender:", gender, "\n")
   cat("Competitions:", comps, "\n")
+  cat("Completed Solves:", comp_solves, "\n")
+  cat("PR Data:\n")
+  print(events)
 }
