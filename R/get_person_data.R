@@ -3,8 +3,10 @@
 #' Gets person data from WCA website using the ID provided.
 #'
 #' @importFrom rvest read_html html_node html_text html_table html_element
+#' @importFrom dplyr quo
 #' @param id ID of the person to be searched.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
+#' @param directory Directory where the .csv file will be saved.
 #' @export
 get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
   options(pillar.sigfig=7)

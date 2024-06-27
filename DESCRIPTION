@@ -9,5 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-  rvest
+  rvest,
+  dplyr
 RoxygenNote: 7.3.1

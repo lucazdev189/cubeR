@@ -10,6 +10,8 @@ get_person_data(id, export_csv = FALSE, directory = NULL)
 \item{id}{ID of the person to be searched.}
 
 \item{export_csv}{Whether or not the data should be exported. Set to false by default.}
+
+\item{directory}{Directory where the .csv file will be saved.}
 }
 \description{
 Gets person data from WCA website using the ID provided.
