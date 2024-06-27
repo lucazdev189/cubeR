@@ -3,7 +3,6 @@
 #' Gets person data from WCA website using the ID provided.
 #'
 #' @importFrom rvest read_html html_node html_text html_table html_element
-#' @importFrom dplyr %>%
 #' @param id ID of the person to be searched.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
 #' @export
@@ -11,33 +10,33 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL) {
   options(pillar.sigfig=7)
   html <- rvest::read_html(paste("https://www.worldcubeassociation.org/persons/", id, sep = ""))
 
-  name <- html %>%
-    rvest::html_node("div.text-center h2") %>%
+  name <- html |>
+    rvest::html_node("div.text-center h2") |>
     rvest::html_text()
 
-  image_url <- html %>%
-    rvest::html_node("div.text-center img.avatar") %>%
+  image_url <- html |>
+    rvest::html_node("div.text-center img.avatar") |>
     rvest::html_attr("src")
 
-   country <- html %>%
-    rvest::html_node(".country") %>%
+   country <- html |>
+    rvest::html_node(".country") |>
     rvest::html_text()
 
-   gender <- html %>%
-     rvest::html_node("table.table tbody td:nth-child(3)") %>%
+   gender <- html |>
+     rvest::html_node("table.table tbody td:nth-child(3)") |>
      rvest::html_text()
 
-   comps <- html %>%
-     rvest::html_node("table.table tbody td:nth-child(4)") %>%
+   comps <- html |>
+     rvest::html_node("table.table tbody td:nth-child(4)") |>
      rvest::html_text()
 
-   comp_solves <- html %>%
-     rvest::html_node("table.table tbody td:nth-child(5)") %>%
+   comp_solves <- html |>
+     rvest::html_node("table.table tbody td:nth-child(5)") |>
      rvest::html_text()
 
-   events <- html %>%
-     rvest::html_element(".personal-records table") %>%
-     rvest::html_table() %>%
+   events <- html |>
+     rvest::html_element(".personal-records table") |>
+     rvest::html_table() |>
      dplyr::select(Event, Single, Average)
 
    if(export_csv) {
