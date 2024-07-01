@@ -4,6 +4,7 @@
 #'
 #' @importFrom rvest read_html html_node html_text html_table html_element
 #' @importFrom dplyr quo select
+#' @importFrom tibble tibble as_tibble
 #' @param id ID of the competition to be searched for.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
 #' @param directory Directory where the .csv file will be saved.
@@ -49,10 +50,7 @@ get_comp_data <- function(id, export_csv=FALSE, directory=NULL, file_name) {
     print("Saved to directory")
   }
 
-  cat("Name:", name, "\n")
-  cat("Date:", date, "\n")
-  cat("Venue:", venue, "\n")
-  cat("Competitors:", competitors, "\n")
-  cat("1st Placers:")
-  print(first_placers)
+  comp_data <- tibble::tibble(Comp_Name = name, Date = date, Venue = venue, Competitiors = competitors)
+  top_1s <- tibble::as_tibble(first_placers)
+  return(list(comp_data = comp_data, top_1s = top_1s))
 }

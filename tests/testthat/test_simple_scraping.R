@@ -1,0 +1,15 @@
+library(cubeR)
+library(dplyr)
+library(rvest)
+library(testthat)
+library(magrittr)
+
+test_that("scrapes wca comp and person data correctly", {
+  competition <- get_comp_data("WC1982")$top_1s %>%
+    pull(Best)
+
+  theperson <- get_person_data("1982THAI01")$person_events %>%
+    pull(Single)
+
+  expect_equal(competition, theperson)
+})

@@ -4,6 +4,7 @@
 #'
 #' @importFrom rvest read_html html_node html_text html_table html_element
 #' @importFrom dplyr quo select
+#' @importFrom tibble tibble as_tibble
 #' @param id ID of the person to be searched.
 #' @param export_csv Whether or not the data should be exported. Set to false by default.
 #' @param directory Directory where the .csv file will be saved.
@@ -60,13 +61,7 @@ get_person_data <- function(id, export_csv=FALSE, directory=NULL, file_name) {
      print("Saved to directory")
    }
 
-  cat("Name:", name, "\n")
-  cat("ID:", id, "\n")
-  cat("Image URL:", image_url, "\n")
-  cat("Country:", country, "\n")
-  cat("Gender:", gender, "\n")
-  cat("Competitions:", comps, "\n")
-  cat("Completed Solves:", comp_solves, "\n")
-  cat("PR Data:\n")
-  print(events)
+   person_data <- tibble::tibble(Name = name, ID = id, Avatar = image_url, From = country, Gender = gender, Competitions = comps, Completed_Solves = comp_solves)
+   person_events <- tibble::as_tibble(events)
+   return(list(person_data = person_data, person_events = person_events))
 }
