@@ -13,10 +13,16 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_comp_data.html</loc>
   </url>
   <url>
     <loc>/reference/get_person_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_record.html</loc>
   </url>
   <url>
     <loc>/reference/get_regulation.html</loc>
