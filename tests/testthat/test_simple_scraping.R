@@ -5,11 +5,9 @@ library(testthat)
 library(magrittr)
 
 test_that("scrapes wca comp and person data correctly", {
-  competition <- get_comp_data("WC1982")$top_1s %>%
-    pull(Best)
+  competition <- get_comp_data("WC1982")$top_1s$Best
 
-  theperson <- get_person_data("1982THAI01")$person_events %>%
-    pull(Single)
+  theperson <- get_person_data("1982THAI01")$person_events$Single
 
   expect_equal(competition, theperson)
 })
