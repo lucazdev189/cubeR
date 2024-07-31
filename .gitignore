@@ -1,5 +1,6 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-.Rproj
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rhistory$
+^\.RData$
+^\.Ruserdata$
+^\.github$

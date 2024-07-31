@@ -1,19 +1,19 @@
 Package: cubeR
 Type: Package
-Title: cubeR
+Title: The R package for easy research on cubing
+License: GPL-2 | file LICENSE
 Version: 0.1.0
 Author: lucazdev189
 Maintainer: Lucas E <erinlucas626@gmail.com>
 Description: Scrapes data from the World Cube Association website.
-License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
   rvest,
   dplyr,
-  tibble,
-  magrittr
+  tibble
 RoxygenNote: 7.3.1
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    magrittr
 Config/testthat/edition: 3
