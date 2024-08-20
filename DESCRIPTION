@@ -1,9 +1,8 @@
 Package: cubeR
 Type: Package
-Title: World Cube Association data scraping
+Title: World Cube Association Data Scraping
 License: GPL-2 | file LICENSE
 Version: 0.1.0
-Author: lucazdev189
 Authors@R: c(person(family = "lucazdev189", role = "aut"), person(given = "Lucas", family = "E", role = "cre", email = "erinlucas626@gmail.com"))
 Maintainer: Lucas E <erinlucas626@gmail.com>
 Description: Scrapes data from the World Cube Association website.
