@@ -6,9 +6,6 @@
 #' @importFrom dplyr quo select
 #' @importFrom tibble tibble as_tibble
 #' @param id ID of the competition to be searched for.
-#' @param export_csv Whether or not the data should be exported. Set to false by default.
-#' @param directory Directory where the .csv file will be saved.
-#' @param file_name File name of the .csv file.
 #' @export
 get_comp_data <- function(id, export_csv=FALSE, directory=NULL, file_name) {
   html <- rvest::read_html(paste0("https://www.worldcubeassociation.org/competitions/", id))
@@ -35,20 +32,6 @@ get_comp_data <- function(id, export_csv=FALSE, directory=NULL, file_name) {
     rvest::html_element(".table-responsive") |>
     rvest::html_table() |>
     dplyr::select("Event", "Name", "Best", "Average", "Representing")
-
-  if(export_csv) {
-    key_data <- data.frame(
-      name,
-      date,
-      venue,
-      competitors,
-      first_placers
-    )
-    names(key_data) <- c("Name", "Date", "Venue", "Competitors", "First Placers")
-    final_data <- cbind(key_data, first_placers)
-    write.csv(final_data, file=paste0(directory, "/", file_name, ".csv"), fileEncoding = "UTF-8")
-    print("Saved to directory")
-  }
 
   comp_data <- tibble::tibble(Comp_Name = name, Date = date, Venue = venue, Competitiors = competitors)
   top_1s <- tibble::as_tibble(first_placers)
